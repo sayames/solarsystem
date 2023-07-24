@@ -1,13 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D Solar System Simulation</title>
+    <title>Celestial Simulation</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
 </head>
 <body>
-  <div id="solar-system"></div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="solar_system.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Create the sun
+        const sunGeometry = new THREE.SphereGeometry(5, 32, 32);
+        const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+        const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+        scene.add(sun);
+
+        // Create the planets
+        const planets = [];
+        const planetDistances = [10, 15, 20, 25]; // Distance from the sun
+        const planetSizes = [1, 1.5, 1.2, 0.8]; // Size of the planets
+        const planetColors = [0xff0000, 0x00ff00, 0x0000ff, 0xff00ff]; // Color of the planets
+
+        for (let i = 0; i < planetDistances.length; i++) {
+            const planetGeometry = new THREE.SphereGeometry(planetSizes[i], 16, 16);
+            const planetMaterial = new THREE.MeshBasicMaterial({ color: planetColors[i] });
+            const planet = new THREE.Mesh(planetGeometry, planetMaterial);
+            planet.position.x = planetDistances[i];
+            scene.add(planet);
+            planets.push(planet);
+        }
+
+        camera.position.z = 50;
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Rotate the planets around the sun
+            planets.forEach((planet, index) => {
+                const speed = 0.01 * (index + 1); // Adjust the speed for each planet
+                planet.rotation.y += speed;
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+    </script>
 </body>
 </html>
