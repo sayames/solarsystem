@@ -15,7 +15,7 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
 scene.add(directionalLight);
 
 // Load the sun
-const sunTexture = new THREE.TextureLoader().load('path_to_sun_texture.jpg');
+const sunTexture = new THREE.TextureLoader().load('https://www.universetoday.com/wp-content/uploads/2022/09/Hbeta1_yellow-scaled-1-2000x1200.jpg');
 const sunGeometry = new THREE.SphereGeometry(4, 32, 32);
 const sunMaterial = new THREE.MeshBasicMaterial({ map: sunTexture });
 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
